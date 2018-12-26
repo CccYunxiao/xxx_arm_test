@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: canopen_test_utils
+    relative_path: urdf/rig1.urdf.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/rig1.srdf
+  CONFIG:
+    author_name: xxx
+    author_email: xxx@qq.com
+    generated_timestamp: 1543807385

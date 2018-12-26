@@ -1,0 +1,73 @@
+# hardware_id: none # used for diagnostics
+
+defaults: # optional, all defaults can be overwritten per node
+  ### 301
+  eds_pkg: xxx_arm_test # optionals package  name for relative path
+  eds_file: "config/Elmo_old.dcf" # path to EDS/DCF file
+  dcf_overlay: # "ObjectID": "ParameterValue" (both as strings)
+    # "6098": "35" #  homing method
+    # "1016sub1" : "0x7F0064" # heartbeat timeout of 100 ms for master at 127birl_copley.dcf
+    "1017": "100" # heartbeat producer
+#    "6081": "0x90000" # velocity that the trajectory generator attempts to achieve when in position profile mode.
+#    "1016sub1" : "0x7F0064" # heartbeat timeout of 100 ms for master at 127
+#    "1017": "1000" # heartbeat producer, set the node to repoduce heart beat signal every second
+  ### 402
+  # motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer plugin
+  # motor_layer: # settings passed to motor layer (plugin-specific)
+  #   switching_state: 5 # (Operation_Enable), state for mode switching
+  #   monitor_mode: true # read operation mode in every cycle
+  ### ROS
+  # publish: ["60C1sub1", "6060!"] # list of objects to be published (one topic per node and entry), ! diables caching and forces read from device
+  ### ros_control: conversion functions
+  # pos_to_device: "rint(rad2deg(pos)*1000)" # rad -> mdeg
+  # pos_from_device: "deg2rad(obj6064)/1000" # actual position [mdeg] -> rad
+  # vel_to_device: "rint(rad2deg(vel)*1000)" # rad/s -> mdeg/s
+  # vel_from_device: "deg2rad(obj606C)/1000" # actual velocity [mdeg/s] -> rad/s
+  # eff_to_device: "rint(eff)" # just round to integer
+  # eff_from_device: "0" # unset
+
+nodes:
+  rig1_plate_joint:
+    ### node settings
+    id: 2 # node id
+    # name: must be set for array-styled format, defaults to entry name
+    # joint: <name> # set motor joint name
+    ### defaults will be merged recursively (only structs), node settings have precedence
+    pos_to_device: "rint(rad2deg(pos)*(50000/360))" # rad -> mdeg
+    pos_from_device: "deg2rad(obj6064/(50000/360))" # actual position [mdeg] -> rad
+    vel_to_device: "rint(rad2deg(vel)*5.8)" # rad/s -> mdeg/s
+    vel_from_device: "deg2rad(obj606C)/5.8" # actual velocity [mdeg/s] -> rad/s
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset
+
+    dcf_overlay: # "ObjectID": "ParameterValue" (both as strings)
+      "6081" : "100000"
+      "6083" : "5000"
+      "6084" : "5000"
+      "6502" : "1005"
+      "6060" : "0x07"
+      "60c0" : "0x0000"
+      "60c2sub1" : "0x10"
+      "60c2sub2" : "0xfd"
+      "1600sub0" : "3"
+      "1600sub1" : "0x60400010"
+      "1600sub2" : "0x60600008"
+      "1600sub3" : "0x607a0020"
+      "1601sub0" : "2"
+      "1601sub1" : "0x60ff0020"
+      "1601sub2" : "0x60710010"
+      "1602sub0" : "2"
+      "1602sub1" : "0x60c00010"
+      "1602sub2" : "0x60c10120"
+      "1603sub0" : "2"
+      "1603sub1" : "0x60c10208"
+      "1603sub2" : "0x60c10320"
+     # "1a00sub0" : "2"
+     # "1a00sub1" : "0x60410010"
+     # "1a00sub2" : "0x60610008"
+     # "1a01sub0" : "2"
+     # "1a01sub1" : "0x60640020"
+     # "1a01sub2" : "0x606c0020"
+     # "1a02sub0" : "2"
+     # "1a02sub1" : "0x60770010"
+     # "1a02sub2" : "0x60FD0020"

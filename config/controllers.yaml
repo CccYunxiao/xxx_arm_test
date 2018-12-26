@@ -1,0 +1,7 @@
+controller_list:
+  - name: joint_trajectory_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - rig1_plate_joint

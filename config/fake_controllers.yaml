@@ -1,0 +1,4 @@
+controller_list:
+  - name: fake_rig1_controller
+    joints:
+      - rig1_plate_joint

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="model" default="$(find canopen_test_utils)/urdf/model.urdf"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+
+  <node ns="rig1" name="driver" pkg="canopen_motor_node" type="canopen_motor_node" output="screen" clear_params="true" launch-prefix="">
+    <rosparam command="load" file="$(find canopen_test_utils)/config/can0.yaml" />
+    <rosparam command="load" file="$(find canopen_test_utils)/config/canopen_rig1.yaml" />
+    <remap from="joint_states" to="/joint_states"/>
+  </node>
+
+  <rosparam command="load" file="$(find xxx_arm_test)/config/ros_controllers.yaml"/>
+
+  <node ns="rig1" name="rig1_controller_spawner" pkg="controller_manager" type="spawner" args="joint_state_controller joint_trajectory_controller" />
+
+</launch>
